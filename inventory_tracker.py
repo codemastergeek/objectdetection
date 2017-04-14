@@ -5,8 +5,8 @@ import pandas as pd
 
 IMG_PATH_TEMPLATE_1 = 'coke.png'		#Path to reference image for object 1
 IMG_PATH_TEMPLATE_2 = 'bisleri.png'		#Path to reference image for object 2
-THRESHOLD_TEMPLATE_1 = 0.6			#Matching threshold for image 1 ~Range 0-1
-THRESHOLD_TEMPLATE_2 = 0.6			#Matching threshold for image 1 ~Range 0-1
+THRESHOLD_TEMPLATE_1 = 0.6			#Matching threshold for image 1(object1) ~Range 0-1
+THRESHOLD_TEMPLATE_2 = 0.6			#Matching threshold for image 2(object2) ~Range 0-1
 IMG_PATH_INPUT = 'input.png'			#Path to input image
 
 img_rgb = cv2.imread(IMG_PATH_INPUT)
@@ -15,7 +15,7 @@ capture = cv2.VideoCapture('Inventory Tracker')
 capture
 cap = cv2.VideoCapture(0)			#Getting the video object of camera interface, 0 for default camera 
 		
-def extract_matching_points(template_img_path, threshold):		#Method to extract the matching points from the input image
+def extract_matching_points(template_img_path, threshold):		#Method to extract the matching points from the input image, it returns an array of matching co-ordinates
 	template = cv2.imread(template_img_path,0)
 	w, h = template.shape[::-1]
 	res = cv2.matchTemplate(img_gray,template,cv2.TM_CCOEFF_NORMED)
@@ -26,7 +26,7 @@ def extract_matching_points(template_img_path, threshold):		#Method to extract t
 		collectionlist.append(list(boxes))
         return np.array(collectionlist)
 
-def matching_points_suppression(boxes):					#Method to supress the duplicate matching points
+def matching_points_suppression(boxes):					#Method to supress the duplicate matching points, it returns the total count of the objects detected
 	template_match_count = 0
        	if len(boxes) == 0:
 		return 0
